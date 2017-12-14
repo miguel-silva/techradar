@@ -27,11 +27,11 @@ export default {
     },
   ],
   plugins: [
-    resolve(),
-    commonjs(),
     babel({
       exclude: "node_modules/**",
     }),
+    resolve(),
+    commonjs(),
     uglify({}, minify),
   ],
   globals: {
