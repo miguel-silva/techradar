@@ -46,16 +46,16 @@ const createTechradar = (svgEl: any, data: TechradarData) => {
 
   const arcs = pie().value(() => 1)(data.slices);
 
-  const ringInfoList = data.rings.map((ring, ringIndex) => {
+  const ringPathInfoList = data.rings.map((ring, ringIndex) => {
     const innerRadius = radiusScale(ringIndex + 1);
     const outerRadius = radiusScale(ringIndex + 2);
-    const pathGenerator = arc()
+    const generator = arc()
       .innerRadius(innerRadius)
       .outerRadius(outerRadius);
     return {
       innerRadius,
       outerRadius,
-      pathGenerator,
+      generator,
     };
   });
 
@@ -65,13 +65,13 @@ const createTechradar = (svgEl: any, data: TechradarData) => {
     //TEST: middle point angle
     const angle = arc.startAngle + (arc.endAngle - arc.startAngle) / 2;
 
-    const ringsPerSlice = data.rings.map((ring, ringIndex) => {
-      const ringInfo = ringInfoList[ringIndex];
+    const sliceAreas = data.rings.map((ring, ringIndex) => {
+      const ringPathInfo = ringPathInfoList[ringIndex];
 
       //TEST: middle point distance
       const distance =
-        ringInfo.innerRadius +
-        (ringInfo.outerRadius - ringInfo.innerRadius) / 2;
+        ringPathInfo.innerRadius +
+        (ringPathInfo.outerRadius - ringPathInfo.innerRadius) / 2;
 
       //TEST: middle point coords
       const point = {
@@ -83,11 +83,11 @@ const createTechradar = (svgEl: any, data: TechradarData) => {
         sliceIndex,
         ringIndex,
         point,
-        path: ringInfo.pathGenerator(arc),
+        path: ringPathInfo.generator(arc),
       };
     });
 
-    return acc.concat(ringsPerSlice);
+    return acc.concat(sliceAreas);
   }, []);
 
   //add areas
