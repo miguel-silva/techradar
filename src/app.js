@@ -13,6 +13,9 @@ const data: TechradarData = {
     {
       name: "Frameworks & Ecosystems",
     },
+    {
+      name: "App state-management",
+    },
   ],
 };
 
