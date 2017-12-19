@@ -161,7 +161,8 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
     .attr("d", area => area.path);
 
   const showBlipTooltip = blip => {
-    tooltip.show(blip.name, event.x, event.y);
+    const blipRect = event.target.getBoundingClientRect();
+    tooltip.show(blip.name, blipRect.x + blipRect.width / 2, blipRect.y);
   };
 
   //add blips
@@ -175,7 +176,7 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
     .attr("r", blipRadius)
     .attr("fill", blip => sliceColorScale(blip.sliceIndex))
     .on("touchstart", showBlipTooltip)
-    .on("mousemove", showBlipTooltip)
+    .on("mouseover", showBlipTooltip)
     .on("touchend", tooltip.hide)
     .on("mouseout", tooltip.hide);
 
