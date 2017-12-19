@@ -92,24 +92,38 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
     (acc, sliceData, sliceIndex) => {
       const arc = arcs[sliceIndex];
 
-      const blipAngleScale = scaleLinear().range([
-        arc.startAngle,
-        arc.endAngle,
-      ]);
-
+      //generate areas and blips for all of this slice's rings
       const sliceViewData = data.rings.reduce(
         (acc, ringData, ringIndex) => {
           const ringPathInfo = ringPathInfoList[ringIndex];
 
           const blipDataList = sliceData.blipsByRing[ringData.id];
 
+          //generate blips, if there are any for the current slice's ring
           const blips = blipDataList
             ? acc.blips.concat(
                 blipDataList.map(blip => {
+                  //calculate random distance within the current ring
                   const distance = ringPathInfo.blipDistanceScale(
                     Math.random()
                   );
-                  const angle = blipAngleScale(Math.random());
+
+                  //calculate angle padding to avoid blip overlapping adjacent slices
+                  const anglePadding = Math.asin(blipRadius / distance);
+
+                  const minAngle = arc.startAngle + anglePadding;
+                  const maxAngle = arc.endAngle - anglePadding;
+
+                  const blipAngleScale = scaleLinear().range([
+                    minAngle,
+                    maxAngle,
+                  ]);
+
+                  //if there is enough space, calculate random angle within the current ring, otherwise center it
+                  const angle =
+                    maxAngle > minAngle
+                      ? blipAngleScale(Math.random())
+                      : blipAngleScale(0.5);
 
                   return {
                     ...blip,
@@ -122,6 +136,7 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
               )
             : acc.blips;
 
+          //generate area that is the interception of current slice and ring
           const area = {
             sliceIndex,
             ringIndex,
