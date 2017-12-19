@@ -181,19 +181,30 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
   };
 
   //add blips
-  container
+  const blips = container
     .selectAll("g")
     .data(viewData.blips)
     .enter()
     .append("g")
+    .style("font-size", "12")
     .attr("transform", blip => `translate(${blip.x}, ${blip.y})`)
-    .append("circle")
-    .attr("r", blipRadius)
-    .attr("fill", blip => sliceColorScale(blip.sliceIndex))
     .on("touchstart", showBlipTooltip)
     .on("mouseover", showBlipTooltip)
     .on("touchend", tooltip.hide)
     .on("mouseout", tooltip.hide);
+
+  blips
+    .append("circle")
+    .attr("r", blipRadius)
+    .attr("fill", blip => sliceColorScale(blip.sliceIndex));
+
+  blips
+    .append("text")
+    .style("pointer-events", "none")
+    .attr("dy", 4)
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .text((blip, blipIndex) => blipIndex + 1);
 
   return techradar;
 };
