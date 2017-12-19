@@ -39,7 +39,7 @@ export type TechradarData = {
   rings: TechradarRing[],
 };
 
-const createTechradar = (svgEl: any, data: TechradarData) => {
+const createTechradar = (targetEl: any, data: TechradarData) => {
   //create shared tooltip
   const tooltip = select("body")
     .append("div")
@@ -81,7 +81,8 @@ const createTechradar = (svgEl: any, data: TechradarData) => {
   };
 
   //setup base svg
-  const techradar = select(svgEl)
+  const techradar = select(targetEl)
+    .append("svg")
     .attr("width", width)
     .attr("height", height);
 
