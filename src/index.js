@@ -11,6 +11,8 @@ import {
   event,
 } from "d3";
 
+import { Tooltip } from "./Tooltip";
+
 const width = 600;
 const height = 600;
 const padding = 10;
@@ -40,45 +42,7 @@ export type TechradarData = {
 };
 
 const createTechradar = (targetEl: any, data: TechradarData) => {
-  //create shared tooltip
-  const tooltip = select("body")
-    .append("div")
-    .style("font-size", "12px")
-    .style("color", "white")
-    .style("opacity", 0)
-    .style("position", "absolute")
-    .style("pointer-events", "none")
-    .style("border-radius", "3px")
-    .style("background-color", "black")
-    .style("padding", "5px 8px");
-
-  //add shared tooltip's text container
-  const tooltipSpan = tooltip.append("span");
-
-  //add tooltip's box arrow
-  tooltip
-    .append("div")
-    .text("▼")
-    .style("color", "black")
-    .style("position", "absolute")
-    .style("margin-top", "-3px")
-    .style("top", "100%")
-    .style("left", 0)
-    .style("width", "100%")
-    .style("text-align", "center");
-
-  const showTooltip = blip => {
-    tooltipSpan.text(blip.name);
-    tooltip
-      .style("opacity", 1)
-      .style("left", event.x - tooltip.node().offsetWidth / 2 + "px")
-      .style("top", event.y - tooltip.node().offsetHeight - 10 + "px");
-  };
-
-  const hideTooltip = () => {
-    tooltip.style("opacity", 0);
-    tooltipSpan.text("");
-  };
+  const tooltip = new Tooltip();
 
   //setup base svg
   const techradar = select(targetEl)
@@ -196,6 +160,10 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
     .attr("stroke", "black")
     .attr("d", area => area.path);
 
+  const showBlipTooltip = blip => {
+    tooltip.show(blip.name, event.x, event.y);
+  };
+
   //add blips
   container
     .selectAll("g")
@@ -206,10 +174,10 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
     .append("circle")
     .attr("r", blipRadius)
     .attr("fill", blip => sliceColorScale(blip.sliceIndex))
-    .on("touchstart", showTooltip)
-    .on("mousemove", showTooltip)
-    .on("touchend", hideTooltip)
-    .on("mouseout", hideTooltip);
+    .on("touchstart", showBlipTooltip)
+    .on("mousemove", showBlipTooltip)
+    .on("touchend", tooltip.hide)
+    .on("mouseout", tooltip.hide);
 
   return techradar;
 };
