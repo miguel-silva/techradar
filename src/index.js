@@ -163,6 +163,19 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
             return acc;
           }, []);
 
+          //sort positions taking into account their angle and distance
+          positions.sort(function(a, b) {
+            const angleDiff = a.angle - b.angle;
+            const distanceDiff = a.distance - b.distance;
+
+            //if the angle difference is greater than the distance (to the center) difference, return angleDiff as the sorting factor otherwise return distanceDiff
+            return Math.abs(
+              Math.sin(angleDiff) * (b.distance + distanceDiff / 2)
+            ) > Math.abs(distanceDiff)
+              ? angleDiff
+              : distanceDiff;
+          });
+
           //generate and add new blips
           acc.blips = acc.blips.concat(
             blipDataList.map((blip, blipIndex) => {
