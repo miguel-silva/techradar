@@ -6,8 +6,8 @@ import {
   arc,
   scaleLinear,
   scaleLog,
-  scaleOrdinal,
-  schemeCategory10,
+  scaleSequential,
+  interpolateRainbow,
   event,
 } from "d3";
 
@@ -55,9 +55,9 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
     .append("g")
     .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-  const sliceColorScale = scaleOrdinal()
-    .domain(data.slices.map((slice, sliceIndex) => sliceIndex))
-    .range(schemeCategory10);
+  const sliceColorScale = scaleSequential()
+    .domain([0, data.slices.length])
+    .interpolator(interpolateRainbow);
 
   const ringColorScale = scaleLinear()
     .domain([0, data.rings.length - 1])
@@ -67,7 +67,9 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
     .domain([1, data.rings.length + 1])
     .range([0, width / 2 - padding]);
 
-  const arcs = pie().value(() => 1)(data.slices);
+  const arcs = pie()
+    .value(1)(data.slices)
+    .sort();
 
   //generate ring path info from data.rings
   const ringPathInfoList = data.rings.map((ringData, ringIndex) => {
