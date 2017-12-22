@@ -11,6 +11,8 @@ import {
   event,
 } from "d3";
 
+import { readableColor } from "polished";
+
 import { Tooltip } from "./Tooltip";
 
 const width = 600;
@@ -95,6 +97,9 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
   const viewData = data.slices.reduce(
     (acc, sliceData, sliceIndex) => {
       const arc = arcs[sliceIndex];
+
+      const blipBgColor = sliceColorScale(sliceIndex);
+      const blipTextColor = readableColor(blipBgColor);
 
       //generate areas and blips for all of this slice's rings
       const sliceViewData = data.rings.reduce(
@@ -187,6 +192,8 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
                 ...blip,
                 sliceIndex,
                 ringIndex,
+                bgColor: blipBgColor,
+                textColor: blipTextColor,
                 x: position.x,
                 y: position.y,
               };
@@ -243,14 +250,15 @@ const createTechradar = (targetEl: any, data: TechradarData) => {
   blips
     .append("circle")
     .attr("r", blipRadius)
-    .attr("fill", blip => sliceColorScale(blip.sliceIndex));
+    .attr("stroke", "black")
+    .attr("fill", blip => blip.bgColor);
 
   blips
     .append("text")
     .style("pointer-events", "none")
     .attr("dy", 4)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
+    .attr("fill", blip => blip.textColor)
     .text((blip, blipIndex) => blipIndex + 1);
 
   return techradar;
