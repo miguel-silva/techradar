@@ -15,7 +15,7 @@ import type { TechradarData, TechradarOptions } from "./types";
 
 const OUTER_PADDING = 5;
 
-const generateTechradarViewData = (
+const generateTechradarStructure = (
   data: TechradarData,
   radarSize: number,
   blipRadius: number
@@ -65,6 +65,10 @@ const generateTechradarViewData = (
 
       const blipBgColor = sliceColorScale(sliceIndex);
       const blipTextColor = readableColor(blipBgColor);
+
+      acc.meta.slices.push({
+        color: blipBgColor,
+      });
 
       //generate areas and blips for all of this slice's rings
       const sliceViewData = data.rings.reduce(
@@ -177,13 +181,17 @@ const generateTechradarViewData = (
       return {
         areas: acc.areas.concat(sliceViewData.areas),
         blips: acc.blips.concat(sliceViewData.blips),
+        meta: acc.meta,
       };
     },
     {
       areas: [],
       blips: [],
+      meta: {
+        slices: [],
+      },
     }
   );
 };
 
-export default generateTechradarViewData;
+export default generateTechradarStructure;

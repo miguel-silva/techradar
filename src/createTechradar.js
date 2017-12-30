@@ -2,7 +2,7 @@
 
 import { select, event } from "d3";
 
-import generateTechradarViewData from "./generateTechradarViewData";
+import generateTechradarStructure from "./generateTechradarStructure";
 
 import { Tooltip } from "./Tooltip";
 
@@ -33,7 +33,7 @@ const createTechradar = (
     .attr("transform", `translate(${radarCenter}, ${radarCenter})`);
 
   //generate areas and blips
-  const viewData = generateTechradarViewData(data, radarSize, blipRadius);
+  const viewData = generateTechradarStructure(data, radarSize, blipRadius);
 
   //add areas
   container
@@ -77,7 +77,7 @@ const createTechradar = (
     .attr("fill", blip => blip.textColor)
     .text((blip, blipIndex) => blipIndex + 1);
 
-  return techradar;
+  return { meta: viewData.meta };
 };
 
 export default createTechradar;
