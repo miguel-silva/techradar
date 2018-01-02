@@ -11,15 +11,24 @@ import {
 
 import { readableColor } from "polished";
 
-import type { TechradarData, TechradarOptions } from "./types";
+import type {
+  TechradarData,
+  TechradarOptions,
+  TechradarViewData,
+  TechradarSliceViewData,
+  TechradarRingViewData,
+  TechradarBlipViewData,
+  TechradarAreaViewData,
+} from "./types";
 
 const OUTER_PADDING = 5;
 
-const generateTechradarStructure = (
+const generateTechradarViewData = (
   data: TechradarData,
-  radarSize: number,
-  blipRadius: number
-) => {
+  options?: TechradarOptions
+): TechradarViewData => {
+  const { radarSize = 600, blipRadius = 10 } = options || {};
+
   //setup base scales
   const sliceColorScale = scaleSequential()
     .domain([0, data.slices.length])
@@ -38,54 +47,72 @@ const generateTechradarStructure = (
     .value(1)(data.slices)
     .sort();
 
-  //generate ring path info from data.rings
-  const ringPathInfoList = data.rings.map((ringData, ringIndex) => {
-    const innerRadius = radiusScale(ringIndex + 1);
-    const outerRadius = radiusScale(ringIndex + 2);
+  //generate ring derived data from data.rings
+  const ringsDerivedData = data.rings.reduce(
+    (acc, ringData, ringIndex) => {
+      const innerRadius = radiusScale(ringIndex + 1);
+      const outerRadius = radiusScale(ringIndex + 2);
 
-    //arc path generator
-    const generator = arc()
-      .innerRadius(innerRadius)
-      .outerRadius(outerRadius);
-    return {
-      blipDistanceScale: scaleLinear().range([
-        innerRadius + blipRadius,
-        outerRadius - blipRadius,
-      ]),
-      generator,
-    };
-  });
+      //arc path generator
+      const generator = arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius);
+
+      const ring: TechradarRingViewData = {
+        ...ringData,
+        color: ringColorScale(ringIndex),
+      };
+
+      acc.rings.push(ring);
+
+      acc.pathInfoList.push({
+        blipDistanceScale: scaleLinear().range([
+          innerRadius + blipRadius,
+          outerRadius - blipRadius,
+        ]),
+        generator,
+      });
+
+      return acc;
+    },
+    {
+      rings: [],
+      pathInfoList: [],
+    }
+  );
 
   const minBlipCenterDistance = blipRadius * 2;
 
-  //generate viewData ({blips, areas}) from combining data.slices with data.rings
-  return data.slices.reduce(
+  //generate viewData ({slices, areas, blips}) from combining data.slices with data.rings
+  const slicesDerivedData = data.slices.reduce(
     (acc, sliceData, sliceIndex) => {
       const arc = arcs[sliceIndex];
 
-      const blipBgColor = sliceColorScale(sliceIndex);
-      const blipTextColor = readableColor(blipBgColor);
+      const color = sliceColorScale(sliceIndex);
 
-      acc.meta.slices.push({
-        color: blipBgColor,
-      });
+      const { blipsByRing, ...sliceDetails } = sliceData;
+
+      const slice: TechradarSliceViewData = {
+        ...sliceDetails,
+        color,
+        textColor: (readableColor(color): any),
+      };
 
       //generate areas and blips for all of this slice's rings
-      const sliceViewData = data.rings.reduce(
+      const areasAndBlips = data.rings.reduce(
         (acc, ringData, ringIndex) => {
-          const ringPathInfo = ringPathInfoList[ringIndex];
+          const ringPathInfo = ringsDerivedData.pathInfoList[ringIndex];
 
           //generate area that is the interception of current slice and ring
-          const area = {
+          const area: TechradarAreaViewData = {
             sliceIndex,
             ringIndex,
-            bgColor: ringColorScale(ringIndex),
             path: ringPathInfo.generator(arc),
           };
 
           acc.areas.push(area);
 
-          const blipDataList = sliceData.blipsByRing[ringData.id];
+          const blipDataList = blipsByRing[ringData.id];
 
           //avoid generating blips for the current slice's ring, if there aren't any
           if (!blipDataList) {
@@ -155,15 +182,13 @@ const generateTechradarStructure = (
 
           //generate and add new blips
           acc.blips = acc.blips.concat(
-            blipDataList.map((blip, blipIndex) => {
+            blipDataList.map((blipData, blipIndex): TechradarBlipViewData => {
               const position = positions[blipIndex];
 
               return {
-                ...blip,
+                ...blipData,
                 sliceIndex,
                 ringIndex,
-                bgColor: blipBgColor,
-                textColor: blipTextColor,
                 x: position.x,
                 y: position.y,
               };
@@ -179,19 +204,26 @@ const generateTechradarStructure = (
       );
 
       return {
-        areas: acc.areas.concat(sliceViewData.areas),
-        blips: acc.blips.concat(sliceViewData.blips),
-        meta: acc.meta,
+        areas: acc.areas.concat(areasAndBlips.areas),
+        blips: acc.blips.concat(areasAndBlips.blips),
+        slices: acc.slices.concat(slice),
       };
     },
     {
       areas: [],
       blips: [],
-      meta: {
-        slices: [],
-      },
+      slices: [],
     }
   );
+
+  return {
+    global: {
+      radarSize,
+      blipRadius,
+    },
+    rings: ringsDerivedData.rings,
+    ...slicesDerivedData,
+  };
 };
 
-export default generateTechradarStructure;
+export default generateTechradarViewData;

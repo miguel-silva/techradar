@@ -2,7 +2,7 @@
 
 import { select, event } from "d3";
 
-import generateTechradarStructure from "./generateTechradarStructure";
+import generateTechradarViewData from "./generateTechradarViewData";
 
 import { Tooltip } from "./Tooltip";
 
@@ -15,25 +15,23 @@ const createTechradar = (
   data: TechradarData,
   options?: TechradarOptions
 ) => {
-  const { radarSize = 600, blipRadius = 10 } = options || {};
-
   const tooltip = new Tooltip();
+
+  //generate areas and blips
+  const viewData = generateTechradarViewData(data, options);
 
   //setup base svg
   const techradar = select(targetEl)
     .append("svg")
-    .attr("width", radarSize)
-    .attr("height", radarSize);
+    .attr("width", viewData.global.radarSize)
+    .attr("height", viewData.global.radarSize);
 
-  const radarCenter = radarSize / 2;
+  const radarCenter = viewData.global.radarSize / 2;
 
   //add centered container
   const container = techradar
     .append("g")
     .attr("transform", `translate(${radarCenter}, ${radarCenter})`);
-
-  //generate areas and blips
-  const viewData = generateTechradarStructure(data, radarSize, blipRadius);
 
   //add areas
   container
@@ -41,7 +39,7 @@ const createTechradar = (
     .data(viewData.areas)
     .enter()
     .append("path")
-    .attr("fill", area => area.bgColor)
+    .attr("fill", area => viewData.rings[area.ringIndex].color)
     .attr("stroke", "black")
     .attr("d", area => area.path);
 
@@ -65,19 +63,21 @@ const createTechradar = (
 
   blips
     .append("circle")
-    .attr("r", blipRadius)
+    .attr("r", viewData.global.blipRadius)
     .attr("stroke", "black")
-    .attr("fill", blip => blip.bgColor);
+    .attr("fill", blip => viewData.slices[blip.sliceIndex].color);
 
   blips
     .append("text")
     .style("pointer-events", "none")
     .attr("dy", 4)
     .attr("text-anchor", "middle")
-    .attr("fill", blip => blip.textColor)
+    .attr("fill", blip => viewData.slices[blip.sliceIndex].textColor)
     .text((blip, blipIndex) => blipIndex + 1);
 
-  return { meta: viewData.meta };
+  return {
+    viewData,
+  };
 };
 
 export default createTechradar;

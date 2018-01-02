@@ -8,7 +8,7 @@
   "scripts": {
     "start": "run-p build:dev serve:dev",
     "build:dev": "rollup -c rollup.config.dev.js -w",
-    "serve:dev": "serve public",
+    "serve:dev": "serve -o public",
     "build": "rollup -c rollup.config.prod.js"
   },
   "repository": {
