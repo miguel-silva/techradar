@@ -6,15 +6,19 @@ import generateTechradarViewData from "./generateTechradarViewData";
 
 import { Tooltip } from "./Tooltip";
 
-import type { TechradarData, TechradarOptions } from "./types";
-
-export type { TechradarData, TechradarOptions };
+import type {
+  TechradarData,
+  TechradarOptions,
+  TechradarViewData,
+} from "./types";
 
 const createTechradar = (
   targetEl: any,
   data: TechradarData,
   options?: TechradarOptions
-) => {
+): {
+  viewData: TechradarViewData,
+} => {
   const tooltip = new Tooltip();
 
   //generate areas and blips
