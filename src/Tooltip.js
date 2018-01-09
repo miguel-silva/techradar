@@ -42,4 +42,9 @@ export class Tooltip {
     this.tooltip.style("opacity", 0);
     this.tooltipSpan.text("");
   };
+
+  destroy = () => {
+    this.tooltip.remove();
+    this.tooltipSpan = this.tooltip = null;
+  };
 }

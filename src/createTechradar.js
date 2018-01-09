@@ -18,6 +18,7 @@ const createTechradar = (
   options?: TechradarOptions
 ): {
   viewData: TechradarViewData,
+  destroy: () => void,
 } => {
   const tooltip = new Tooltip();
 
@@ -79,8 +80,14 @@ const createTechradar = (
     .attr("fill", blip => viewData.slices[blip.sliceIndex].textColor)
     .text((blip, blipIndex) => blipIndex + 1);
 
+  const destroy = () => {
+    tooltip.destroy();
+    techradar.remove();
+  };
+
   return {
     viewData,
+    destroy,
   };
 };
 
