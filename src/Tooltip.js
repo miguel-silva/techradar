@@ -15,7 +15,9 @@ export class Tooltip {
       .style("padding", "5px 8px");
 
     //add tooltip's text container
-    this.tooltipSpan = this.tooltip.append("span");
+    this.tooltipSpan = this.tooltip
+      .append("span")
+      .style("white-space", "nowrap");
 
     //add tooltip's box arrow
     this.tooltip

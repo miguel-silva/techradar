@@ -1,16 +1,22 @@
 // @flow
 
 import createTechradar from "./createTechradar";
-import generateTechradarViewData from "./generateTechradarViewData";
+import generateTechradarVizData from "./generateTechradarVizData";
 
 import type {
   TechradarData,
   TechradarOptions,
-  TechradarViewData,
+  TechradarVizOptions,
+  TechradarVizData,
 } from "./types";
 
 export default createTechradar;
 
-export { generateTechradarViewData };
+export { generateTechradarVizData };
 
-export type { TechradarData, TechradarOptions, TechradarViewData };
+export type {
+  TechradarData,
+  TechradarOptions,
+  TechradarVizOptions,
+  TechradarVizData,
+};

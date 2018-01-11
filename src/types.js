@@ -23,18 +23,23 @@ export type TechradarData = {
   rings: TechradarRingData[],
 };
 
-export type TechradarOptions = {
+export type TechradarVizOptions = {
   radarSize?: number,
   blipRadius?: number,
 };
 
-export type TechradarAreaViewData = {
+export type TechradarOptions = {
+  ...TechradarVizOptions,
+  blipTooltipEnabled?: boolean,
+};
+
+export type TechradarAreaVizData = {
   sliceIndex: number,
   ringIndex: number,
   path: string,
 };
 
-export type TechradarBlipViewData = {
+export type TechradarBlipVizData = {
   ...TechradarBlipData,
   sliceIndex: number,
   ringIndex: number,
@@ -42,24 +47,24 @@ export type TechradarBlipViewData = {
   y: number,
 };
 
-export type TechradarSliceViewData = {
+export type TechradarSliceVizData = {
   name: string,
   color: string,
   textColor: string,
 };
 
-export type TechradarRingViewData = {
+export type TechradarRingVizData = {
   ...TechradarRingData,
   color: string,
 };
 
-export type TechradarViewData = {
+export type TechradarVizData = {
   global: {
     radarSize: number,
     blipRadius: number,
   },
-  areas: TechradarAreaViewData[],
-  blips: TechradarBlipViewData[],
-  slices: TechradarSliceViewData[],
-  rings: TechradarRingViewData[],
+  areas: TechradarAreaVizData[],
+  blips: TechradarBlipVizData[],
+  slices: TechradarSliceVizData[],
+  rings: TechradarRingVizData[],
 };

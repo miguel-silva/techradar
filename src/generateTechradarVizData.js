@@ -13,20 +13,20 @@ import { readableColor } from "polished";
 
 import type {
   TechradarData,
-  TechradarOptions,
-  TechradarViewData,
-  TechradarSliceViewData,
-  TechradarRingViewData,
-  TechradarBlipViewData,
-  TechradarAreaViewData,
+  TechradarVizOptions,
+  TechradarVizData,
+  TechradarSliceVizData,
+  TechradarRingVizData,
+  TechradarBlipVizData,
+  TechradarAreaVizData,
 } from "./types";
 
 const OUTER_PADDING = 5;
 
-const generateTechradarViewData = (
+const generateTechradarVizData = (
   data: TechradarData,
-  options?: TechradarOptions
-): TechradarViewData => {
+  options?: TechradarVizOptions
+): TechradarVizData => {
   const { radarSize = 600, blipRadius = 10 } = options || {};
 
   //setup base scales
@@ -58,7 +58,7 @@ const generateTechradarViewData = (
         .innerRadius(innerRadius)
         .outerRadius(outerRadius);
 
-      const ring: TechradarRingViewData = {
+      const ring: TechradarRingVizData = {
         ...ringData,
         color: ringColorScale(ringIndex),
       };
@@ -83,7 +83,7 @@ const generateTechradarViewData = (
 
   const minBlipCenterDistance = blipRadius * 2;
 
-  //generate viewData ({slices, areas, blips}) from combining data.slices with data.rings
+  //generate VizData ({slices, areas, blips}) from combining data.slices with data.rings
   const slicesDerivedData = data.slices.reduce(
     (acc, sliceData, sliceIndex) => {
       const arc = arcs[sliceIndex];
@@ -92,7 +92,7 @@ const generateTechradarViewData = (
 
       const { blipsByRing, ...sliceDetails } = sliceData;
 
-      const slice: TechradarSliceViewData = {
+      const slice: TechradarSliceVizData = {
         ...sliceDetails,
         color,
         textColor: (readableColor(color): any),
@@ -104,7 +104,7 @@ const generateTechradarViewData = (
           const ringPathInfo = ringsDerivedData.pathInfoList[ringIndex];
 
           //generate area that is the interception of current slice and ring
-          const area: TechradarAreaViewData = {
+          const area: TechradarAreaVizData = {
             sliceIndex,
             ringIndex,
             path: ringPathInfo.generator(arc),
@@ -182,7 +182,7 @@ const generateTechradarViewData = (
 
           //generate and add new blips
           acc.blips = acc.blips.concat(
-            blipDataList.map((blipData, blipIndex): TechradarBlipViewData => {
+            blipDataList.map((blipData, blipIndex): TechradarBlipVizData => {
               const position = positions[blipIndex];
 
               return {
@@ -226,4 +226,4 @@ const generateTechradarViewData = (
   };
 };
 
-export default generateTechradarViewData;
+export default generateTechradarVizData;
