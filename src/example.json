@@ -1,0 +1,109 @@
+{
+  "rings": [
+    { "id": "adopt", "name": "Adopt" },
+    { "id": "trial", "name": "Trial" },
+    { "id": "assess", "name": "Assess" },
+    { "id": "hold", "name": "Hold" }
+  ],
+  "slices": [
+    {
+      "name": "Frameworks & Ecosystems",
+      "blipsByRing": {
+        "adopt": [{ "name": "React" }],
+        "assess": [{ "name": "Vue" }, { "name": "Angular (2+)" }],
+        "hold": [{ "name": "AngularJS (1)" }, { "name": "jQuery" }]
+      }
+    },
+    {
+      "name": "Linting & Formatting",
+      "blipsByRing": {
+        "adopt": [{ "name": "ESLint" }, { "name": "Prettier" }],
+        "trial": [{ "name": "AirBNB Eslint Config" }]
+      }
+    },
+    {
+      "name": "Project starter",
+      "blipsByRing": {
+        "adopt": [{ "name": "CRA (Create React App)" }],
+        "trial": [{ "name": "Next.js" }, { "name": "React App Rewired" }]
+      }
+    },
+    {
+      "name": "App state-management",
+      "blipsByRing": {
+        "adopt": [{ "name": "Redux" }],
+        "assess": [{ "name": "Mobx-State-Tree" }, { "name": "Statty" }]
+      }
+    },
+    {
+      "name": "Async handling",
+      "blipsByRing": {
+        "adopt": [{ "name": "RxJS (5)" }],
+        "trial": [{ "name": "Redux Observable" }],
+        "assess": [{ "name": "Redux Saga" }]
+      }
+    },
+    {
+      "name": "Enhancers",
+      "blipsByRing": {
+        "trial": [
+          { "name": "Redux Form" },
+          { "name": "Downshift" },
+          { "name": "React Sortable" }
+        ],
+        "assess": [
+          { "name": "React DnD" },
+          { "name": "Recompose" },
+          { "name": "PowerPlug" }
+        ]
+      }
+    },
+    {
+      "name": "Component Styling",
+      "blipsByRing": {
+        "trial": [{ "name": "Emotion" }],
+        "assess": [
+          { "name": "Styled Components" },
+          { "name": "Glamor" },
+          { "name": "Glamorous" }
+        ],
+        "hold": [{ "name": "CSS Modules" }]
+      }
+    },
+    {
+      "name": "Routing",
+      "blipsByRing": {
+        "adopt": [{ "name": "React Router" }],
+        "assess": [{ "name": "Redux-First Router" }]
+      }
+    },
+    {
+      "name": "Code-sharing",
+      "blipsByRing": {
+        "assess": [
+          { "name": "React Primitives" },
+          { "name": "React Native Web" }
+        ]
+      }
+    },
+    {
+      "name": "Testing",
+      "blipsByRing": {
+        "adopt": [{ "name": "Jest" }, { "name": "Enzyme" }],
+        "hold": [{ "name": "Mocha" }]
+      }
+    },
+    {
+      "name": "UI Library",
+      "blipsByRing": {
+        "trial": [{ "name": "Material-UI (1.0)" }],
+        "assess": [
+          { "name": "React Toolbox (2.0)" },
+          { "name": "Ant Design" },
+          { "name": "Semantic UI" }
+        ],
+        "hold": [{ "name": "Material-UI (<1.0)" }]
+      }
+    }
+  ]
+}
