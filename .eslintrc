@@ -1,0 +1,9 @@
+{
+  "extends": ["unobtrusive", "unobtrusive/import", "unobtrusive/flowtype"],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "flowtype/no-dupe-keys": "off"
+  }
+}

@@ -164,6 +164,7 @@ const generateTechradarVizData = (
               });
             }
 
+            //eslint-disable-next-line no-unreachable
             return acc;
           }, []);
 
