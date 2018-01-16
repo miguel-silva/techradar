@@ -1,7 +1,7 @@
 {
   "name": "techradar",
   "version": "0.0.1",
-  "description": "",
+  "description": "Create your own technology radar, with a flexible structure",
   "module": "dist/techradar.es.js",
   "main": "dist/techradar.cjs.js",
   "browser": "dist/techradar.umd.js",
