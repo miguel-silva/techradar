@@ -1,9 +1,12 @@
 {
   "extends": ["unobtrusive", "unobtrusive/import", "unobtrusive/flowtype"],
-  "env": {
-    "browser": true
-  },
+  "plugins": ["jest"],
   "rules": {
     "flowtype/no-dupe-keys": "off"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest/globals": true
   }
 }
