@@ -68,7 +68,9 @@ const exampleData = {
   ],
 };
 
-window.techradar = createTechradar(targetEl, exampleData);
+createTechradar(targetEl, exampleData, {
+  radarSize: 300,
+});
 ```
 
 ## Next steps
