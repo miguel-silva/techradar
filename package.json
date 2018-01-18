@@ -12,6 +12,7 @@
     "serve:dev": "serve -o public",
     "build": "rollup -c rollup.config.prod.js",
     "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint --fix 'src/**/*.js'",
     "format": "prettier --write '{src/**/,}*.{js,json,css,md}'"
