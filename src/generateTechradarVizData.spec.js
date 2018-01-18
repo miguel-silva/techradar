@@ -23,5 +23,19 @@ describe("generateTechradarVizData", () => {
 
       expect(colorSet.size).toBe(vizData.rings.length);
     });
+
+    it("slices should contain all slice input data, except blipsPerRing", () => {
+      vizData.slices.forEach((vizSlice, sliceIndex) => {
+        const { blipsByRing, ...inputSlice } = exampleData.slices[sliceIndex];
+
+        expect(vizSlice).toEqual(expect.objectContaining(inputSlice));
+      });
+    });
+
+    it("slices should have a unique color", () => {
+      const colorSet = new Set(vizData.slices.map(vizSlice => vizSlice.color));
+
+      expect(colorSet.size).toBe(vizData.slices.length);
+    });
   });
 });

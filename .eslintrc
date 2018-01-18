@@ -2,6 +2,7 @@
   "extends": ["unobtrusive", "unobtrusive/import", "unobtrusive/flowtype"],
   "plugins": ["jest"],
   "rules": {
+    "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
     "flowtype/no-dupe-keys": "off"
   },
   "env": {
