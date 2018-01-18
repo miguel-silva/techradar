@@ -43,5 +43,9 @@ describe("generateTechradarVizData", () => {
         vizData.slices.length * vizData.rings.length
       );
     });
+
+    it("should return default global attributes", () => {
+      expect(vizData.global).toMatchSnapshot();
+    });
   });
 });

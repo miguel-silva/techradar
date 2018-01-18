@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateTechradarVizData with exampleData and default options should return default global attributes 1`] = `
+Object {
+  "blipRadius": 10,
+  "radarSize": 600,
+}
+`;
