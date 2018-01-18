@@ -11,29 +11,35 @@ describe("generateTechradarVizData", () => {
     });
 
     it("should return rings, each containing their respective ring input data", () => {
-      vizData.rings.forEach((vizRing, ringIndex) => {
-        expect(vizRing).toEqual(
+      vizData.rings.forEach((ringVizData, ringIndex) => {
+        expect(ringVizData).toEqual(
           expect.objectContaining(exampleData.rings[ringIndex])
         );
       });
     });
 
     it("should return rings, each containing a unique color", () => {
-      const colorSet = new Set(vizData.rings.map(vizRing => vizRing.color));
+      const colorSet = new Set(
+        vizData.rings.map(ringVizData => ringVizData.color)
+      );
 
       expect(colorSet.size).toBe(vizData.rings.length);
     });
 
     it("should return slices, each containing their respective slice input data, except blipsPerRing", () => {
-      vizData.slices.forEach((vizSlice, sliceIndex) => {
-        const { blipsByRing, ...inputSlice } = exampleData.slices[sliceIndex];
+      vizData.slices.forEach((sliceVizData, sliceIndex) => {
+        const { blipsByRing, ...sliceInputData } = exampleData.slices[
+          sliceIndex
+        ];
 
-        expect(vizSlice).toEqual(expect.objectContaining(inputSlice));
+        expect(sliceVizData).toEqual(expect.objectContaining(sliceInputData));
       });
     });
 
     it("should return slices, each containing a unique color", () => {
-      const colorSet = new Set(vizData.slices.map(vizSlice => vizSlice.color));
+      const colorSet = new Set(
+        vizData.slices.map(sliceVizData => sliceVizData.color)
+      );
 
       expect(colorSet.size).toBe(vizData.slices.length);
     });
@@ -46,6 +52,36 @@ describe("generateTechradarVizData", () => {
 
     it("should return default global attributes", () => {
       expect(vizData.global).toMatchSnapshot();
+    });
+
+    it("should return blips, each containing their respective blip input data and correct slice and ring indexes", () => {
+      //extract blip data, and their slice and ring index, in order
+      const blips = exampleData.slices.reduce((acc, slice, sliceIndex) => {
+        const { blipsByRing } = slice;
+        const sliceBlips = Object.keys(blipsByRing).reduce((acc, ringId) => {
+          const ringIndex = exampleData.rings.findIndex(
+            ring => ring.id === ringId
+          );
+          if (ringIndex === -1) {
+            return acc;
+          }
+
+          const ringBlips = blipsByRing[ringId].map(blip => ({
+            ...blip,
+            sliceIndex,
+            ringIndex,
+          }));
+
+          return acc.concat(ringBlips);
+        }, []);
+
+        return acc.concat(sliceBlips);
+      }, []);
+
+      vizData.blips.forEach((blipVizData, blipIndex) => {
+        const blipData = blips[blipIndex];
+        expect(blipVizData).toEqual(expect.objectContaining(blipData));
+      });
     });
   });
 });
