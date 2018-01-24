@@ -10,5 +10,8 @@
 # Dev bundle
 /public/bundle*
 
+# coverage
+/coverage
+
 # IDE
 .vscode

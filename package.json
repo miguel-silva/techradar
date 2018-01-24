@@ -13,6 +13,7 @@
     "build": "rollup -c rollup.config.prod.js",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint --fix 'src/**/*.js'",
     "format": "prettier --write '{src/**/,}*.{js,json,css,md}'"
@@ -68,6 +69,6 @@
     "*.{json,css,md}": ["prettier --write", "git add"]
   },
   "jest": {
-    "rootDir": "src"
+    "collectCoverageFrom": ["src/**/*.js"]
   }
 }
