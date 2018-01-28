@@ -3,6 +3,10 @@ import Tooltip from "./Tooltip";
 describe("Tooltip", () => {
   let tooltip: Tooltip;
 
+  const text = "Hello!";
+  const anchorX = 500;
+  const anchorY = 1000;
+
   beforeEach(() => {
     tooltip = new Tooltip();
   });
@@ -19,11 +23,7 @@ describe("Tooltip", () => {
     expect(tooltipEl).toMatchSnapshot();
   });
 
-  it("should make tooltip visible with specified text, on top of a certain anchor point, after calling the show method", () => {
-    const text = "Hello!";
-    const anchorX = 500;
-    const anchorY = 1000;
-
+  it("should make tooltip visible with specified text, on top of a certain anchor point, after calling .show()", () => {
     tooltip.show(text, anchorX, anchorY);
 
     const tooltipEl = document.querySelector("body > div");
@@ -39,5 +39,21 @@ describe("Tooltip", () => {
 
     const tooltipSpanEl = tooltipEl.querySelector("span");
     expect(tooltipSpanEl.textContent).toBe(text);
+  });
+
+  it("should hide the tooltip, after calling .show() and then .hide()", () => {
+    tooltip.show(text, anchorX, anchorY);
+    tooltip.hide();
+
+    const tooltipEl = document.querySelector("body > div");
+
+    expect(tooltipEl.style.getPropertyValue("opacity")).toEqual("0");
+  });
+
+  it("should remove the tooltip, after calling .destroy()", () => {
+    tooltip.destroy();
+
+    const tooltipEl = document.querySelector("body > div");
+    expect(tooltipEl).toBeNull();
   });
 });
