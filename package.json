@@ -69,6 +69,6 @@
     "*.{json,css,md}": ["prettier --write", "git add"]
   },
   "jest": {
-    "collectCoverageFrom": ["src/**/*.js"]
+    "collectCoverageFrom": ["src/**/*.js", "!src/app.js"]
   }
 }

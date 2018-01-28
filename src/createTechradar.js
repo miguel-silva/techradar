@@ -4,7 +4,7 @@ import { select, event } from "d3";
 
 import generateTechradarVizData from "./generateTechradarVizData";
 
-import { Tooltip } from "./Tooltip";
+import Tooltip from "./Tooltip";
 
 import type {
   TechradarData,

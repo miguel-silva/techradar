@@ -1,6 +1,6 @@
 import { select } from "d3";
 
-export class Tooltip {
+export default class Tooltip {
   constructor() {
     //create tooltip
     this.tooltip = select("body")
