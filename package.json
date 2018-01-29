@@ -24,7 +24,7 @@
     "type": "git",
     "url": "git+https://github.com/miguel-silva/techradar.git"
   },
-  "keywords": ["d3", "techradar"],
+  "keywords": ["d3js", "techradar", "technology-radar"],
   "author": "Miguel Silva <miguel.smsilva@gmail.com>",
   "license": "MIT",
   "bugs": {
