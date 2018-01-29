@@ -17,7 +17,7 @@ But what about when you want more (or less) dimensions or adoption levels at you
 * Forms
 * etc...
 
-This library was created because no other tool was able to catter those situations.
+This library was created because no other tool was able to support those situations, at that point in time.
 
 ## Installation
 
@@ -30,6 +30,12 @@ It also depends on D3.js v4:
 `npm install --save d3`
 
 ## Usage
+
+The example below defines a techradar that:
+
+* is appended to an element whose id is `radar-container`
+* contains several blips, divided across 3 rings (levels of adoption) and 3 slices (topics)
+* is `300px` wide and tall
 
 ```js
 import createTechradar from "@miguel-silva/techradar";
