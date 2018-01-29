@@ -8,7 +8,7 @@ export default class Tooltip {
       .style("font-size", "12px")
       .style("color", "white")
       .style("opacity", 0)
-      .style("position", "absolute")
+      .style("position", "fixed")
       .style("pointer-events", "none")
       .style("border-radius", "3px")
       .style("background-color", "black")

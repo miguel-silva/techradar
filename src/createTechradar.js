@@ -85,11 +85,7 @@ const createTechradar = (
       .on("mouseover", blip => {
         const blipRect = event.target.getBoundingClientRect();
 
-        tooltip.show(
-          blip.name,
-          window.pageXOffset + blipRect.x + blipRect.width / 2,
-          window.pageYOffset + blipRect.y
-        );
+        tooltip.show(blip.name, blipRect.x + blipRect.width / 2, blipRect.y);
       })
       .on("mouseout", () => {
         tooltip.hide();
