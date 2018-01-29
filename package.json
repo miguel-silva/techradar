@@ -5,8 +5,10 @@
   "module": "dist/techradar.es.js",
   "main": "dist/techradar.cjs.js",
   "browser": "dist/techradar.umd.js",
+  "files": ["dist", "src"],
   "scripts": {
     "precommit": "lint-staged",
+    "prepublish": "npm run build",
     "start": "run-p build:dev serve:dev",
     "build:dev": "rollup -c rollup.config.dev.js -w",
     "serve:dev": "serve -o public",
@@ -22,7 +24,7 @@
     "type": "git",
     "url": "git+https://github.com/miguel-silva/techradar.git"
   },
-  "keywords": [],
+  "keywords": ["d3", "techradar"],
   "author": "Miguel Silva <miguel.smsilva@gmail.com>",
   "license": "MIT",
   "bugs": {
